@@ -1,0 +1,99 @@
+﻿@page "/admin/clients"
+
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using CarRental_BlazorApp.Models
+
+
+@inject IClientData _db_Clients
+
+
+<h3>Clients</h3>
+<h4>Insert New Client:</h4>
+<EditForm Model="@newClient" OnValidSubmit="@InsertClient">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="name" @bind-Value="newClient.Name" placeholder="Name" class="m-1" />
+    <InputText id="phone" @bind-Value="newClient.Phone" placeholder="Phone" class="m-1" />
+    <InputText id="email" @bind-Value="newClient.Email" placeholder="Email Address" class="m-1" />
+    <InputText id="password" @bind-Value="newClient.Password" placeholder="Password" class="m-1" />
+    <InputSelect id="licenceType" @bind-Value="newClient.LicenceType" placeholder="Licence Type" class="m-1">
+        <option vlaue="Learner" selected>Learner</option>
+        <option vlaue="Full-Irish"> Full-Irish</option>
+    </InputSelect>
+
+    <InputSelect id="company" @bind-Value="newClient.Company" class="m-1">
+        <option vlaue="No" selected>No</option>
+        <option vlaue="Yes" > Yes</option>
+    </InputSelect>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+<h4> Clients On Data Base: </h4>
+
+@if (clients is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Client_ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>LicenceType</th>
+                <th>Company</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var client in clients)
+            {
+                <tr>
+                    <td>@client.Client_id</td>
+                    <td>@client.Name</td>
+                    <td>@client.Phone</td>
+                    <td>@client.Email</td>
+                    <td>@client.Password</td>
+                    <td>@client.LicenceType</td>
+                    <td>@client.Company</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+
+@code {
+    private List<ClientModel> clients;
+    private DisplayClientModel newClient = new DisplayClientModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        clients = await _db_Clients.GetClients();
+    }
+
+    private async Task InsertClient()
+    {
+        ClientModel client = new ClientModel
+            {
+                Name = newClient.Name,
+                Phone = newClient.Phone,
+                Email = newClient.Email,
+                Password = newClient.Password,
+                LicenceType = newClient.LicenceType,
+                Company = newClient.Company
+            };
+        await _db_Clients.InsertClient(client);
+
+        clients = await _db_Clients.GetClients();
+
+        newClient = new DisplayClientModel();
+    }
+}

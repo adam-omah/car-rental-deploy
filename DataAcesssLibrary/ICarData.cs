@@ -1,6 +1,6 @@
-﻿using DataAcesssLibrary.Models;
+﻿using DataAccessLibrary.Models;
 
-namespace DataAcesssLibrary
+namespace DataAccessLibrary
 {
     public interface ICarData
     {
