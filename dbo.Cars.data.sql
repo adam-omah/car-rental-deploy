@@ -1,0 +1,1 @@
+﻿insert into dbo.Cars (Registration, FuelType, CostPerDay) values ('10WD1010', 'Diesel',50);
