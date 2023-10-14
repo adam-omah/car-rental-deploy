@@ -1,0 +1,50 @@
+﻿@page "/admin/cars"
+
+@using DataAcesssLibrary
+@using DataAcesssLibrary.Models
+
+@inject ICarData _db_cars
+
+
+<h1>Cars Page</h1>
+
+<h4> Cars On Data Base: </h4>
+
+@if (cars is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Regirstration</th>
+                <th>Fuel Type</th>
+                <th>Cost Per Day</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var car in cars)
+            {
+                <tr>
+                    <td>@car.Registration</td>
+                    <td>@car.FuelType</td>
+                    <td>@car.CostPerDay</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+
+@code {
+    private List<CarModel> cars;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cars = await _db_cars.GetCars();
+    }
+}
