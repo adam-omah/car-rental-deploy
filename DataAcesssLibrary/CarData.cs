@@ -25,8 +25,8 @@ namespace DataAccessLibrary
 
         public Task InsertCar(CarModel car)
         {
-            string sql = @"insert into dbo.Cars (Registration, FuelType, CostPerDay)
-                            values (@Registration, @FuelType, @CostPerDay);";
+            string sql = @"insert into dbo.Cars (Registration, FuelType, Model, NumberOfPassengers, CostPerDay, Status, CarType)
+                            values (@Registration, @FuelType, @Model, @NumberOfPassengers, @CostPerDay, @Status, @CarType);";
 
             return _db.SaveData(sql, car);
         }

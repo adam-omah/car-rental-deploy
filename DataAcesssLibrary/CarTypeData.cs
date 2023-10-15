@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLibrary
 {
-    public class CarTypeData
+    public class CarTypeData : ICarTypeData
     {
         private readonly ISqlDataAccess _db;
 

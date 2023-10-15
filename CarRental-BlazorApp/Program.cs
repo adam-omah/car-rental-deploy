@@ -12,6 +12,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<ICarData, CarData>();
 builder.Services.AddTransient<IClientData, ClientData>();
+builder.Services.AddTransient<ICarTypeData, CarTypeData>();
 
 var app = builder.Build();
 

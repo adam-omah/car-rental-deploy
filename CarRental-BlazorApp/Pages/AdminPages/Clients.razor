@@ -18,13 +18,16 @@
     <InputText id="phone" @bind-Value="newClient.Phone" placeholder="Phone" class="m-1" />
     <InputText id="email" @bind-Value="newClient.Email" placeholder="Email Address" class="m-1" />
     <InputText id="password" @bind-Value="newClient.Password" placeholder="Password" class="m-1" />
+    <label for="licenceType">Type of drivers Licence?</label>
     <InputSelect id="licenceType" @bind-Value="newClient.LicenceType" placeholder="Licence Type" class="m-1">
-        <option vlaue="Learner" selected>Learner</option>
+        <option value="">Select</option>
+        <option vlaue="Learner" >Learner</option>
         <option vlaue="Full-Irish"> Full-Irish</option>
     </InputSelect>
-
+    <label for="company">Are you traveling for business?</label>
     <InputSelect id="company" @bind-Value="newClient.Company" class="m-1">
-        <option vlaue="No" selected>No</option>
+        <option value="" >Select</option>
+        <option vlaue="No" >No</option>
         <option vlaue="Yes" > Yes</option>
     </InputSelect>
     <button type="submit" class="btn btn-primary">Submit</button>
