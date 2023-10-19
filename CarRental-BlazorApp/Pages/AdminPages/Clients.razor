@@ -15,9 +15,11 @@
     <ValidationSummary />
 
     <InputText id="name" @bind-Value="newClient.Name" placeholder="Name" class="m-1" />
+    <InputDate id="dob" @bind-Value="newClient.DOB" placeholder="Date of Birth"></InputDate>
     <InputText id="phone" @bind-Value="newClient.Phone" placeholder="Phone" class="m-1" />
     <InputText id="email" @bind-Value="newClient.Email" placeholder="Email Address" class="m-1" />
     <InputText id="password" @bind-Value="newClient.Password" placeholder="Password" class="m-1" />
+    <br />
     <label for="licenceType">Type of drivers Licence?</label>
     <InputSelect id="licenceType" @bind-Value="newClient.LicenceType" placeholder="Licence Type" class="m-1">
         <option value="">Select</option>
@@ -35,6 +37,7 @@
 
 <h4> Clients On Data Base: </h4>
 
+
 @if (clients is null)
 {
     <p><em>Loading...</em></p>
@@ -46,6 +49,7 @@ else
             <tr>
                 <th>Client_ID</th>
                 <th>Name</th>
+                <th>DOB</th>
                 <th>Phone</th>
                 <th>Email</th>
                 <th>Password</th>
@@ -59,6 +63,7 @@ else
                 <tr>
                     <td>@client.Client_id</td>
                     <td>@client.Name</td>
+                    <td>@client.DOB</td>
                     <td>@client.Phone</td>
                     <td>@client.Email</td>
                     <td>@client.Password</td>
@@ -82,12 +87,18 @@ else
         clients = await _db_Clients.GetClients();
     }
 
+    protected override void OnInitialized()
+    {
+        newClient.DOB = DateTime.Now;
+    }
+
     private async Task InsertClient()
     {
         ClientModel client = new ClientModel
             {
                 Name = newClient.Name,
                 Phone = newClient.Phone,
+                DOB = newClient.DOB,
                 Email = newClient.Email,
                 Password = newClient.Password,
                 LicenceType = newClient.LicenceType,

@@ -2,13 +2,50 @@
 
 @using DataAccessLibrary
 @using DataAccessLibrary.Models
+@using CarRental_BlazorApp.Models
 
 @inject ICarData _db_cars
+@inject ICarTypeData _db_carsTypes
 
 
 <h1>Cars Page</h1>
 
 <h4> Cars On Data Base: </h4>
+<h4>Insert New Client:</h4>
+
+<EditForm Model="@newCar" OnValidSubmit="@InsertCar">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="registration" @bind-Value="newCar.Registration" placeholder="Registration" class="m-1" />
+    <label for="fuelType">Fuel Type?</label>
+    <InputSelect id="fuelType" @bind-Value="newCar.FuelType" class="m-1">
+        <option value="">Select</option>
+        <option vlaue="Diesel">Diesel</option>
+        <option vlaue="Petrol">Petrol</option>
+        <option vlaue="Hybrid">Hybrid</option>
+        <option vlaue="Electric">Electric</option>
+    </InputSelect>
+    <InputText id="model" @bind-Value="newCar.Model" placeholder="Car Model" class="m-1" />
+    <label for="numberOfPassengers">Number Of Passengers?</label>
+    <InputNumber id="numberOfPassengers" @bind-Value="newCar.NumberOfPassengers" ParsingErrorMessage="Number of passengers must be an integer value" class="m-1" />
+    <br />
+    <label for="costPerDay">Cost Per Day?</label>
+    <InputNumber id="costPerDay" @bind-Value="newCar.CostPerDay" ParsingErrorMessage="Cost Per Day must be a float value" class="m-1" />
+    <InputSelect @bind-Value="newCar.CarType">
+        @if (carTypes != null)
+        {
+            <option value="">Select...</option>
+            @foreach (var item in carTypes)
+            {
+                <option value="@item.CarType">@item.CarType</option>
+            }
+        }
+    </InputSelect>
+
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
 
 @if (cars is null)
 {
@@ -42,9 +79,31 @@ else
 
 @code {
     private List<CarModel> cars;
+    private List<CarTypeModel> carTypes;
+    private DisplayCarModel newCar = new DisplayCarModel();
 
     protected override async Task OnInitializedAsync()
     {
         cars = await _db_cars.GetCars();
+        carTypes = await _db_carsTypes.GetCarTypes();
+    }
+
+
+    private async Task InsertCar()
+    {
+        CarModel car = new CarModel
+            {
+                Registration = newCar.Registration,
+                FuelType = newCar.FuelType,
+                Model = newCar.Model,
+                NumberOfPassengers = newCar.NumberOfPassengers,
+                CostPerDay = newCar.CostPerDay,
+                CarType = newCar.CarType
+            };
+        await _db_cars.InsertCar(car);
+
+        cars = await _db_cars.GetCars();
+
+        newCar = new DisplayCarModel();
     }
 }

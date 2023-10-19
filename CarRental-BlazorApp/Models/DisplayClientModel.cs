@@ -10,6 +10,11 @@ namespace CarRental_BlazorApp.Models
         [StringLength(50, ErrorMessage = "First name is too long")]
         [MinLength(2, ErrorMessage = "First name is too short")]
         public string Name { get; set; }
+        
+
+        [Required]
+        public DateTime DOB { get; set; }
+
         [Required]
         [StringLength(15, ErrorMessage = "phone number is too long")]
         [MinLength(6, ErrorMessage = "phone number is too short")]
