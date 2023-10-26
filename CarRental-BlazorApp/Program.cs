@@ -14,6 +14,7 @@ builder.Services.AddTransient<ICarData, CarData>();
 builder.Services.AddTransient<IClientData, ClientData>();
 builder.Services.AddTransient<ICarTypeData, CarTypeData>();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -22,6 +22,8 @@ namespace DataAccessLibrary.Models
         public string LicenceType { get; set; }
 
         public string Company { get; set; }
+
         
+
     }
 }

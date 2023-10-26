@@ -1,0 +1,52 @@
+﻿@page "/login"
+
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using CarRental_BlazorApp.Models
+
+
+@inject IClientData _db_Clients
+
+<h3>Login</h3>
+
+@if (showError)
+{
+    <p class="alert alert-danger">Invalid email or password.</p>
+}
+
+<form>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" id="email" class="form-control" @bind="email" />
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" class="form-control" @bind="password" />
+    </div>
+
+    <button class="btn btn-primary" @onclick="LoginUser">Login</button>
+</form>
+
+@code {
+    private string email;
+    private string password;
+    private bool showError = false;
+
+
+    private async Task LoginUser()
+    {
+
+        if (await _db_Clients.CheckCredentials(email, password))
+        {
+            
+        }
+        else
+        {
+            showError = true;
+        }
+    }
+}
+
+
+
