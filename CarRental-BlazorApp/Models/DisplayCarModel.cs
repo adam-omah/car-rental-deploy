@@ -7,6 +7,8 @@ namespace CarRental_BlazorApp.Models
         [Required]
         [StringLength(12, ErrorMessage = "First name is too long")]
         [MinLength(2, ErrorMessage = "First name is too short")]
+        [RegularExpression("^(\\d{2}-?(KK|kk|ww|WW|c|C|ce|CE|cn|CN|cw|CW|d|D|dl|DL|g|G|ke|KE|ky|KY|l|L|ld|LD|lh|LH|lk|LK|lm|LM|ls|LS|mh|MH|mn|MN|mo|MO|oy|OY|so|SO|rn|RN|tn|TN|ts|TS|w|W|wd|WD|wh|WH|wx|WX)-?\\d{1,4})$",
+        ErrorMessage = "Registration invalid irish reg.")]
         public string Registration { get; set; }
 
         [Required]
