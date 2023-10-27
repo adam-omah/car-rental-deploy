@@ -2,9 +2,9 @@
 
 namespace DataAccessLibrary
 {
-    internal interface IRentalData
+    public interface IRentalData
     {
-        Task<List<RentalModel>> GetRentals();
+        public Task<List<RentalModel>> GetRentals();
         Task InsertRental(RentalModel rental);
     }
 }

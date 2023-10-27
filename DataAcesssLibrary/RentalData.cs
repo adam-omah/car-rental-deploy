@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLibrary
 {
-    internal class RentalData : IRentalData
+    public class RentalData : IRentalData
     {
 
         private readonly ISqlDataAccess _db;
@@ -26,8 +26,8 @@ namespace DataAccessLibrary
 
         public Task InsertRental(RentalModel rental)
         {
-            string sql = @"insert into dbo.Cars (StartDate, EndDate, PickUpDate, ReturnDate, Status, CarRegistration, Client_ID)
-                            values (@StartDate,@EndDate,@PickUpDate,@ReturnDate,@Status,@CarRegistration,@Client_ID);";
+            string sql = @"insert into dbo.Rentals (StartDate, EndDate,Status, CarRegistration, Client_ID)
+                            values (@StartDate,@EndDate,@Status,@CarRegistration,@Client_ID);";
 
             return _db.SaveData(sql, rental);
         }

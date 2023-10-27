@@ -1,0 +1,142 @@
+﻿@page "/admin/rentals"
+
+@using DataAccessLibrary
+@using DataAccessLibrary.Models
+@using CarRental_BlazorApp.Models
+
+@inject IRentalData _db_Rentals
+@inject IClientData _db_Clients
+@inject ICarData _db_Cars
+
+
+<h3>Rentals</h3>
+<h4>Create a Rental:</h4>
+
+
+<EditForm Model="@newRental" OnValidSubmit="@InsertRental">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <label for="StartDate">Start Date: </label>
+    <InputDate id="StartDate" @bind-Value="newRental.StartDate" min=@DateTime.Now.Date></InputDate>
+
+    <label for="EndDate">End Date: </label>
+    <InputDate id="EndDate" @bind-Value="newRental.EndDate" min=@DateTime.Now.Date></InputDate>
+
+    <label for="Client_ID">Client ID: </label>
+    <InputSelect id="Client_ID" @bind-Value="newRental.Client_ID" class="m-1">
+        @if(clients is null)
+        {
+            <option value="-1">-1</option>
+        }else{
+
+            <option value="">Select</option>
+
+        @foreach (var client in clients)
+        {
+
+            <option value="@client.Client_id">@client.Client_id</option>
+        }
+        }
+    </InputSelect>
+
+    <label for="Car_Registration">Car Registration: </label>
+    <InputSelect id="Car_Registration" @bind-Value="newRental.CarRegistration" class="m-1">
+        @if (cars is null)
+        {
+            <option value="-1">-1</option>
+        }
+        else
+        {
+
+        <option value="">Select</option>
+
+            @foreach (var car in cars)
+            {
+                <option value="@car.Registration">@car.Registration</option>
+            }
+        }
+    </InputSelect>
+
+    
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@if (rentals is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Rental_ID</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>PickUpDate</th>
+                <th>ReturnDate</th>
+                <th>Status</th>
+                <th>CarRegistration</th>
+                <th>Client_ID</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rental in rentals)
+            {
+                <tr>
+                    <td>@rental.Rental_ID</td>
+                    <td>@rental.StartDate</td>
+                    <td>@rental.EndDate</td>
+                    <td>@rental.PickUpDate</td>
+                    <td>@rental.ReturnDate</td>
+                    <td>@rental.Status.ToString()</td>
+                    <td>@rental.CarRegistration</td>
+                    <td>@rental.Client_ID</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    @code {
+    private List<RentalModel> rentals;
+    private List<ClientModel> clients;
+    private List<CarModel> cars;
+    private DisplayRentalModel newRental = new DisplayRentalModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        rentals = await _db_Rentals.GetRentals();
+        clients = await _db_Clients.GetClients();
+        cars = await _db_Cars.GetCars();
+
+    }
+
+    protected override void OnInitialized()
+    {
+        newRental.StartDate = DateTime.Now;
+        newRental.EndDate = DateTime.Now;
+    }
+
+    private async Task InsertRental()
+    {
+        RentalModel rental = new RentalModel
+            {
+                StartDate = newRental.StartDate.Date,
+                EndDate = newRental.EndDate.Date,
+                CarRegistration = newRental.CarRegistration,
+                PickUpDate = DateTime.MinValue,
+                ReturnDate = DateTime.MinValue,
+                Status = 'A',
+                Client_ID = newRental.Client_ID
+            };
+        await _db_Rentals.InsertRental(rental);
+
+        rentals = await _db_Rentals.GetRentals();
+
+        newRental = new DisplayRentalModel();
+    }
+}
+}

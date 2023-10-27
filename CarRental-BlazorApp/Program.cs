@@ -13,6 +13,7 @@ builder.Services.AddTransient<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddTransient<ICarData, CarData>();
 builder.Services.AddTransient<IClientData, ClientData>();
 builder.Services.AddTransient<ICarTypeData, CarTypeData>();
+builder.Services.AddTransient<IRentalData, RentalData>();
 
 var app = builder.Build();
 
