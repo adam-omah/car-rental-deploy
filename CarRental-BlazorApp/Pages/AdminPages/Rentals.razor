@@ -29,11 +29,11 @@
         {
             <option value="-1">-1</option>
         }else{
-        
-        @foreach (var client in clients)
-        {
 
             <option value="">Select</option>
+
+        @foreach (var client in clients)
+        {
 
             <option value="@client.Client_id">@client.Client_id</option>
         }
@@ -77,6 +77,7 @@ else
                 <th>EndDate</th>
                 <th>PickUpDate</th>
                 <th>ReturnDate</th>
+                <th>Status</th>
                 <th>CarRegistration</th>
                 <th>Client_ID</th>
                 
@@ -91,6 +92,7 @@ else
                     <td>@rental.EndDate</td>
                     <td>@rental.PickUpDate</td>
                     <td>@rental.ReturnDate</td>
+                    <td>@rental.Status.ToString()</td>
                     <td>@rental.CarRegistration</td>
                     <td>@rental.Client_ID</td>
                 </tr>
@@ -122,11 +124,12 @@ else
     {
         RentalModel rental = new RentalModel
             {
-                StartDate = newRental.StartDate.,
+                StartDate = newRental.StartDate.Date,
                 EndDate = newRental.EndDate.Date,
                 CarRegistration = newRental.CarRegistration,
                 PickUpDate = DateTime.MinValue,
                 ReturnDate = DateTime.MinValue,
+                Status = 'A',
                 Client_ID = newRental.Client_ID
             };
         await _db_Rentals.InsertRental(rental);
