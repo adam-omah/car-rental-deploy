@@ -31,6 +31,16 @@ namespace DataAccessLibrary
 
             return _db.SaveData(sql, client);
         }
+        public async Task<bool> CheckCredentials(string email, string password)
+        {
+            string sql = "SELECT COUNT(*) FROM dbo.Clients WHERE Email = @Email AND Password = @Password";
+
+            var parameters = new { Email = email, Password = password };
+
+            var matchingClients = await _db.LoadData<ClientModel, dynamic>(sql, parameters);
+
+            return matchingClients.Count > 0;
+        }
     }
 
 }
